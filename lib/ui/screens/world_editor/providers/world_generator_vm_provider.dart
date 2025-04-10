@@ -67,7 +67,9 @@ class WorldGeneratorViewModel extends _$WorldGeneratorViewModel {
     sb.write('LOAD OFFSET\n');
     final elementsSet = <GameElement>{};
 
-    for (final element in state) {
+    for (int i = 0; i < state.length; i++) {
+      final element = state[i];
+
       if (element != null) {
         elementsSet.add(element);
         sb.write('STORE MAP_POSITION\n');
@@ -85,8 +87,22 @@ class WorldGeneratorViewModel extends _$WorldGeneratorViewModel {
     sb.write('ONE, DEC 1\n');
 
     for (final element in elementsSet) {
+      final isActor =
+          element != GameElement.wall &&
+          element != GameElement.powerPellet &&
+          element != GameElement.pellet;
+
+      if (isActor) {
+        final index = state.indexOf(element);
+
+        final row = index ~/ sizeRow;
+        final column = index % sizeRow;
+        sb.write('${element.name.toLowerCase()}Row, DEC $row\n');
+        sb.write('${element.name.toLowerCase()}Column, DEC $column\n');
+      }
+
       sb.write(element.assemblyColorInstruction);
-      sb.write('\n');
+      sb.write('\n\n');
     }
 
     return sb.toString();
