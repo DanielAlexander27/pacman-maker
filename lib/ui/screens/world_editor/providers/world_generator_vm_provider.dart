@@ -63,6 +63,7 @@ class WorldGeneratorViewModel extends _$WorldGeneratorViewModel {
 
   String generateAssemblyCode() {
     StringBuffer sb = StringBuffer();
+    int totalPellets = 0;
 
     sb.write('LOAD OFFSET\n');
     final elementsSet = <GameElement>{};
@@ -71,6 +72,11 @@ class WorldGeneratorViewModel extends _$WorldGeneratorViewModel {
       final element = state[i];
 
       if (element != null) {
+        if (element == GameElement.pellet ||
+            element == GameElement.powerPellet) {
+          totalPellets++;
+        }
+
         elementsSet.add(element);
         sb.write('STORE MAP_POSITION\n');
         sb.write('LOAD ${element.assemblyColorName}\n');
@@ -104,6 +110,8 @@ class WorldGeneratorViewModel extends _$WorldGeneratorViewModel {
       sb.write(element.assemblyColorInstruction);
       sb.write('\n\n');
     }
+
+    sb.write('CONSUMIBLES_TOTALES, DEC $totalPellets');
 
     return sb.toString();
   }
