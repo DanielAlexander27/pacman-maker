@@ -30,6 +30,23 @@ class SystemConverter {
     return result;
   }
 
+  static String decToHex(int decimal) {
+    return decToAnySystem(
+      decimal,
+      16,
+      decimalInterpretation: (decimal) {
+        if (decimal == 10) return 'A';
+        if (decimal == 11) return 'B';
+        if (decimal == 12) return 'C';
+        if (decimal == 13) return 'D';
+        if (decimal == 14) return 'E';
+        if (decimal == 15) return 'F';
+
+        return decimal.toString();
+      },
+    );
+  }
+
   static String decToAnySystem(
     int decimal,
     int systemToConvert, {

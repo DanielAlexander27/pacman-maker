@@ -65,4 +65,16 @@ enum GameElement {
       '$assemblyColorName, HEX $assemblyColor';
 
   String get assemblyColorName => '${name.toUpperCase()}_COLOR';
+
+  String getInitialPos(String hexPos) {
+    final String name;
+
+    if (this == GameElement.pacMan) {
+      name = 'PAC_MAN';
+    } else {
+      name = this.name.toUpperCase();
+    }
+
+    return '${name}_INITIAL_POS, HEX $hexPos';
+  }
 }

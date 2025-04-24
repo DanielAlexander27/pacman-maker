@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:packman_maker/domain/utils/system_converter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../domain/enums/game_element.dart';
@@ -15,6 +16,7 @@ class WorldGeneratorViewModel extends _$WorldGeneratorViewModel {
   int? _inkyIndex;
   int? _clydeIndex;
 
+  static final _offset = 0xf00;
   final sizeRow = 16;
   late final sizeGrid = sizeRow * sizeRow;
 
@@ -90,7 +92,7 @@ class WorldGeneratorViewModel extends _$WorldGeneratorViewModel {
     sb.write('HALT\n\n');
     sb.write('OFFSET, HEX F00\n');
     sb.write('MAP_POSITION, HEX F00\n');
-    sb.write('ONE, DEC 1\n');
+    sb.write('ONE, DEC 1\n\n');
 
     for (final element in elementsSet) {
       final isActor =
@@ -100,6 +102,12 @@ class WorldGeneratorViewModel extends _$WorldGeneratorViewModel {
 
       if (isActor) {
         final index = state.indexOf(element);
+
+        sb.write(
+          element.getInitialPos(SystemConverter.decToHex(_offset + index)),
+        );
+
+        sb.write('\n');
 
         final row = index ~/ sizeRow;
         final column = index % sizeRow;
